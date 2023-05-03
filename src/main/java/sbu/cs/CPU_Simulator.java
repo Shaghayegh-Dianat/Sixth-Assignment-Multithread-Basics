@@ -56,6 +56,20 @@ public class CPU_Simulator
         return executedTasks;
     }
 
+    public void sortTasks(ArrayList<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            for (int j = i + 1; j < tasks.size(); j++) {
+                if (tasks.get(i).processingTime > tasks.get(j).processingTime) {
+                    Task temp = tasks.get(i);
+                    tasks.set(i, tasks.get(j));
+                    tasks.set(j, temp);
+                }
+            }
+        }
+
+    }
+    //actually it's a bubble sort
+
     public static void main(String[] args) {
     }
 }
