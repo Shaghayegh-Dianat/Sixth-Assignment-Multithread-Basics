@@ -44,14 +44,7 @@ public class UseInterrupts
         }
     }
 
-/*
-    TODO
-     Analyse the following class and add new code where necessary.
-     If an object from this type of thread is Interrupted, it must print this:
-        "{ThreadName} has been interrupted"
-     And then terminate itself.
-     (Hint: Use the isInterrupted() method)
- */
+
     public static class LoopThread extends Thread {
         int value;
         public LoopThread(int value) {
@@ -65,6 +58,9 @@ public class UseInterrupts
 
             for (int i = 0; i < 10; i += 3)
             {
+                if (Thread.interrupted()) {
+                    break;
+                }
                 i -= this.value;
 
             }
@@ -107,12 +103,22 @@ public class UseInterrupts
         }
 
 
-        // TODO  Check if this thread runs for longer than 3 seconds (if it does, interrupt it)
+
 
         LoopThread loopThread = new LoopThread(3);
         loopThread.start();
-
-        // TODO  Check if this thread runs for longer than 3 seconds (if it does, interrupt it)
+        StopperThread stopperThread_2 =new StopperThread(3000);
+        stopperThread_2.start();
+        try {
+            stopperThread_2.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (loopThread.isAlive()) {
+                loopThread.interrupt();
+                System.out.println(loopThread.getName() + " has been interrupted");
+            }
+        }
 
     }
 }
