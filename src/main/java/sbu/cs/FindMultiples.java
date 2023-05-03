@@ -19,8 +19,11 @@ package sbu.cs;
     Use the tests provided in the test folder to ensure your code works correctly.
  */
 
-public class FindMultiples
-{
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import  java.util.concurrent.TimeUnit;
+public class FindMultiples{
+    public static int sum=0;
 
     public static class Multiplies implements Runnable{
         int number;
@@ -41,6 +44,10 @@ public class FindMultiples
     The getSum function should be called at the start of your program.
     New Threads and tasks should be created here.
     */
+
+    public static synchronized void addValue(int value){
+        sum += value;
+    }
     public int getSum(int n) {
         int sum = 0;
 
