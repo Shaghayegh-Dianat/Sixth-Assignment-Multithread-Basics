@@ -12,13 +12,7 @@ package sbu.cs;
 
 public class UseInterrupts
 {
-/*
-    TODO
-     Analyse the following class and add new code where necessary.
-     If an object from this type of thread is Interrupted, it must print this:
-        "{ThreadName} has been interrupted"
-     And then terminate itself.
- */
+
     public static class SleepThread extends Thread {
         int sleepCounter;
 
@@ -35,6 +29,9 @@ public class UseInterrupts
             {
                 try {
                     Thread.sleep(1000);
+                    if (Thread.interrupted()) {
+                        break;
+                    }
                 } catch (InterruptedException e) {
 
                 }
@@ -96,6 +93,19 @@ public class UseInterrupts
     public static void main(String[] args) {
         SleepThread sleepThread = new SleepThread(5);
         sleepThread.start();
+        StopperThread stopperThread_1=new StopperThread(3000);
+        stopperThread_1.start();
+        try {
+            stopperThread_1.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (sleepThread.isAlive()) {
+                sleepThread.interrupt();
+                System.out.println(sleepThread.getName() + " has been interrupted");
+            }
+        }
+
 
         // TODO  Check if this thread runs for longer than 3 seconds (if it does, interrupt it)
 
