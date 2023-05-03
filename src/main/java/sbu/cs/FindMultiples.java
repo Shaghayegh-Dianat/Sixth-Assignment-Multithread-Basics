@@ -22,8 +22,20 @@ package sbu.cs;
 public class FindMultiples
 {
 
-    // TODO create the required multithreading class/classes using your preferred method.
-
+    public static class Multiplies implements Runnable{
+        int number;
+        public Multiplies(int number) {
+            this.number = number;
+        }
+        @Override
+        public void run() {
+            if (number % 3 == 0 || number % 5 == 0 || number % 7 == 0) {
+                {
+                    addValue(number);
+                }
+            }
+        }
+    }
 
     /*
     The getSum function should be called at the start of your program.
