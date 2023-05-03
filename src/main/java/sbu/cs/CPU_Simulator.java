@@ -50,8 +50,28 @@ public class CPU_Simulator
     */
     public ArrayList<String> startSimulation(ArrayList<Task> tasks) {
         ArrayList<String> executedTasks = new ArrayList<>();
+        sortTasks(tasks);
+        ArrayList<Thread> threads = new ArrayList<>();/* make an arraylist of all threads for each task*/
 
-        // TODO
+        for (Task task: tasks) {
+            Thread thread = new Thread(task);
+            thread.setName(task.ID);
+            threads.add(thread);
+        }
+        for (Thread thread: threads) {
+            thread.start();
+        }
+        for (Thread thread: threads) {
+            try {
+                // make sure program doesn't stop till all threads complete
+                thread.join();
+                executedTasks.add(thread.getName());
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        }
+
+
 
         return executedTasks;
     }
