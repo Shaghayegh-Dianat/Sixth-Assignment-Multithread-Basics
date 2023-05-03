@@ -73,6 +73,21 @@ public class UseInterrupts
             }
         }
     }
+    public static class StopperThread extends Thread {
+        long sleepTime;
+        public StopperThread(long sleepTime) {
+            super();
+            this.sleepTime = sleepTime;
+        }
+        @Override
+        public void run(){
+            try {
+                Thread.sleep(this.sleepTime);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
 /*
     You can add new code to the main function. This is where you must utilize interrupts.
