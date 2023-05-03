@@ -49,9 +49,20 @@ public class FindMultiples{
         sum += value;
     }
     public int getSum(int n) {
-        int sum = 0;
+        sum = 0; // for unit tests
+        ExecutorService executors = Executors.newCachedThreadPool();
 
-        // TODO
+        for (int i = 1; i <=n ; i++){
+            Multiplies obj= new Multiplies(i);
+            executors.execute(obj);
+        }
+
+        executors.shutdown();
+        try {
+            executors.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+
+        }
 
         return sum;
     }
