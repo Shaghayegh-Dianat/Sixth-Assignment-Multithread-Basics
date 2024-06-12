@@ -19,20 +19,50 @@ package sbu.cs;
     Use the tests provided in the test folder to ensure your code works correctly.
  */
 
-public class FindMultiples
-{
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import  java.util.concurrent.TimeUnit;
+public class FindMultiples{
+    public static int sum=0;
 
-    // TODO create the required multithreading class/classes using your preferred method.
-
+    public static class Multiplies implements Runnable{
+        int number;
+        public Multiplies(int number) {
+            this.number = number;
+        }
+        @Override
+        public void run() {
+            if (number % 3 == 0 || number % 5 == 0 || number % 7 == 0) {
+                {
+                    addValue(number);
+                }
+            }
+        }
+    }
 
     /*
     The getSum function should be called at the start of your program.
     New Threads and tasks should be created here.
     */
-    public int getSum(int n) {
-        int sum = 0;
 
-        // TODO
+    public static synchronized void addValue(int value){
+        sum += value;
+    }
+    public int getSum(int n) {
+        sum = 0; // for unit tests
+        ExecutorService executors = Executors.newCachedThreadPool();
+
+        for (int i = 1; i <=n ; i++){
+            Multiplies obj= new Multiplies(i);
+            executors.execute(obj);
+        }
+
+        executors.shutdown();
+        try {
+            executors.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+
+        }
 
         return sum;
     }

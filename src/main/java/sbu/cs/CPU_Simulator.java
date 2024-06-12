@@ -23,7 +23,8 @@ public class CPU_Simulator
         long processingTime;
         String ID;
         public Task(String ID, long processingTime) {
-        // TODO
+            this.ID=ID;
+            this.processingTime=processingTime;
         }
 
     /*
@@ -32,7 +33,13 @@ public class CPU_Simulator
     */
         @Override
         public void run() {
-        // TODO
+            try {
+                Thread.sleep(processingTime);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+
         }
     }
 
@@ -43,11 +50,45 @@ public class CPU_Simulator
     */
     public ArrayList<String> startSimulation(ArrayList<Task> tasks) {
         ArrayList<String> executedTasks = new ArrayList<>();
+        sortTasks(tasks);
+        ArrayList<Thread> threads = new ArrayList<>();/* make an arraylist of all threads for each task*/
 
-        // TODO
+        for (Task task: tasks) {
+            Thread thread = new Thread(task);
+            thread.setName(task.ID);
+            threads.add(thread);
+        }
+        for (Thread thread: threads) {
+            thread.start();
+        }
+        for (Thread thread: threads) {
+            try {
+                // make sure program doesn't stop till all threads complete
+                thread.join();
+                executedTasks.add(thread.getName());
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        }
+
+
 
         return executedTasks;
     }
+
+    public void sortTasks(ArrayList<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            for (int j = i + 1; j < tasks.size(); j++) {
+                if (tasks.get(i).processingTime > tasks.get(j).processingTime) {
+                    Task temp = tasks.get(i);
+                    tasks.set(i, tasks.get(j));
+                    tasks.set(j, temp);
+                }
+            }
+        }
+
+    }
+    //actually it's a bubble sort
 
     public static void main(String[] args) {
     }
